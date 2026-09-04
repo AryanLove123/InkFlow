@@ -1,0 +1,7 @@
+<div class="auth-shell card">
+    <h1>Sign in to InkFLow</h1>
+    @if(errorMessage()){
+        <p class="error">{{ errorMessage() }}</p>
+    }
+    <button (click)="signInWithGoogle()">Sign in with Google</button>
+</div>
