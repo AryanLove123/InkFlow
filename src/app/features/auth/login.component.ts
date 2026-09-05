@@ -1,6 +1,8 @@
 import { Component, inject, signal } from '@angular/core';
 import { AuthService } from '../../core/auth/auth.service';
 import { AuthUser } from '../../models/user.model';
+import { UserService } from '../../core/services/user.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -10,6 +12,8 @@ import { AuthUser } from '../../models/user.model';
 })
 export class LoginComponent {
   authService = inject(AuthService);
+  userService = inject(UserService);
+  router = inject(Router);
 
   errorMessage = signal<string | null>(null);
 
@@ -30,5 +34,12 @@ export class LoginComponent {
 
   completeSignIn(user: AuthUser): void {
     this.authService.completeSignIn(user);
+    const {profile, isFirstLogin} = this.userService.loadOrCreateProfile(user);
+
+    if(isFirstLogin || !profile.onboardingComplete){
+      this.router.navigate(['/onboarding']);
+      return;
+    }
+    this.router.navigate(['/']);
   }
 }

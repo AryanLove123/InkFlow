@@ -1,0 +1,21 @@
+<div class="onboarding-page">
+    <h1>Complete Your Profile</h1>
+    <p class="sub-intro" style="color: var(--color-muted);">Help us personalize your experience by selecting your interests. You can change later them in
+        settings.</p>
+
+    <div class="interest-grid">
+        @for(category of categories; track category){
+        <button type="button" class="chip chip-interactive" [class.chip--selected]="selected().includes(category)"
+            (click)="toggleCategory(category)">{{ category }}</button>
+        }
+    </div>
+
+    <div class="actions">
+        <button type="button" class="btn btn-primary" [disabled]="selected().length == 0" (click)="save()">
+            Continue with {{ selected().length }} interest{{ selected().length === 1 ? '' : 's' }}
+        </button>
+        <button type="button" class="btn btn-secondary" style="color: var(--color-muted);" (click)="skip()">
+            Skip for now
+        </button>
+    </div>
+</div>

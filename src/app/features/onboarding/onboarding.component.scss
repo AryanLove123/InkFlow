@@ -1,0 +1,19 @@
+.onboarding-page {
+    max-width: 640px;
+    margin: var(--space-7) auto;
+    padding: 0 var(--space-4);
+    text-align: center;
+}
+
+.interest-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+    justify-content: center;
+    margin: var(--space-6) 0;
+}
+
+.interest-grid .chip {
+    font-size: 0.95rem;
+    padding: 10px 18px;
+}
