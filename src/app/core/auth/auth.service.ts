@@ -73,7 +73,6 @@ export class AuthService {
   }
 
   completeSignIn(user: AuthUser): void {
-    this.storageService.set(`auth_user_${user.uid}`, user);
     this.storageService.set(STORAGE_KEYS.CURRENT_USER_ID, user.uid);
     this.setUser(user);
   }

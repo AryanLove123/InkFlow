@@ -7,7 +7,10 @@ import { auth } from '../../firebase.config';
   providedIn: 'root',
 })
 export class UserService {
-  private storageService = inject(StorageService);
+  constructor(private storageService: StorageService){
+    const savedUsers = this.storageService.get<Record<string, UserProfile>>(STORAGE_KEYS.USERS);
+    if(savedUsers) this.profiles.set(savedUsers);
+  }
   profiles = signal<Record<string, UserProfile>>({});
   activeProfileId = signal<string | null>(null);
 
@@ -47,17 +50,21 @@ export class UserService {
   }
 
   savePreferences(userId: string, preferences: UserPreferences): void {
-    this.profiles.update((profiles) => ({
-      ...profiles,
-      [userId]: { ...profiles[userId], preferences, onboardingComplete: true },
-    }));
+    this.profiles.update((profiles) => {
+      const existing = profiles[userId];
+      if (!existing) return profiles;
+      return {
+        ...profiles,
+        [userId]: { ...profiles[userId], preferences, onboardingComplete: true },
+      };
+    });
     this.persistProfiles();
   }
 
   updateProfile(userId: string, updatedData: Partial<UserProfile>): void {
-    this.profiles.update((profile) => ({
-      ...profile,
-      [userId]: { ...profile[userId], ...updatedData },
+    this.profiles.update((profiles) => ({
+      ...profiles,
+      [userId]: { ...profiles[userId], ...updatedData },
     }));
     this.persistProfiles();
   }

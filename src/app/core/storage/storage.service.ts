@@ -51,4 +51,6 @@ export class StorageService {
 export const STORAGE_KEYS = {
   USERS: 'users',
   CURRENT_USER_ID: 'current_user_id',
+  ARTICLES: 'articles',
+  HAS_SEEDED: 'hasSeeded',
 } as const;
