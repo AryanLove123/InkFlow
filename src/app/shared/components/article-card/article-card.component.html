@@ -21,13 +21,13 @@
         <div class="row gap-2 article-card-meta">
             <img [src]="article.authorAvatar" [alt]="article.authorName" class="avatar avatar-sm" />
             <span class="article-card-author">{{article.authorName}}</span>
-            <span>{{article.publishedAt}}</span>
+            <span>{{article.publishedAt | relativeTime}}</span>
         </div>
 
         <div class="row gap-3 article-card-stats">
-            <span>👁 {{ article.views }}</span>
-            <span>♥ {{ article.likes }}</span>
-            <span>💬 {{ article.commentCount }}</span>
+            <span>👁 {{ article.views | compactNumber}}</span>
+            <span>♥ {{ article.likes | compactNumber }}</span>
+            <span>💬 {{ article.commentCount | compactNumber }}</span>
         </div>
     </div>
 </a>

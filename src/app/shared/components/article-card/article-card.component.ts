@@ -1,10 +1,12 @@
 import { Component, Input } from '@angular/core';
 import { RouterLink } from "@angular/router";
 import { Article } from '../../../models/article.model';
+import { CompactNumberPipe } from '../../pipes/compact-number.pipe';
+import { RelativeTimePipe } from '../../pipes/relative-time.pipe';
 
 @Component({
   selector: 'app-article-card',
-  imports: [RouterLink],
+  imports: [RouterLink, CompactNumberPipe, RelativeTimePipe],
   templateUrl: './article-card.component.html',
   styleUrl: './article-card.component.scss',
 })
