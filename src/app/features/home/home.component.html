@@ -1,1 +1,50 @@
-<p>home works!</p>
+<section class="container home-hero">
+    <h1>Where ideas meet the world.</h1>
+    <p class="home-hero-sub">
+        InkFlow is a small publishing platform for people who'd rather read one good piece than ten
+        mediocre ones.
+    </p>
+</section>
+
+@if (featuredArticles().length) {
+<section class="container home-featured">
+    <h2>Featured</h2>
+    <div class="grid grid-2">
+        @for (article of featuredArticles(); track article.id) {
+        <app-article-card [article]="article" [isFeatured]="true" badge="Featured" />
+        }
+    </div>
+</section>
+}
+
+<section class="container home-feed">
+    <div class="tabs">
+        <button type="button" [class.is-active]="tab() === 'latest'" (click)="setTab('latest')">
+            Latest
+        </button>
+        <button type="button" [class.is-active]="tab() === 'popular'" (click)="setTab('popular')">
+            Popular
+        </button>
+        <button type="button" [class.is-active]="tab() === 'forYou'" (click)="setTab('forYou')">
+            For You
+        </button>
+    </div>
+
+    @if(tab() === 'forYou' && !currentUser()){
+    <app-empty-state title="Sign in for a personalized feed"
+        message="Once you're signed in and have chosen a few interests, this tab fills up with articles picked for you.">
+        <a routerLink="/login" class="btn btn-primary">Sign in</a>
+    </app-empty-state>
+    } @else if(paged().items.length == 0){
+    <app-empty-state title="No articles yet" message="Check back soon — new pieces are published regularly." />
+
+    } @else {
+    <div class="grid grid-3">
+        @for(article of paged().items; track article.id){
+        <app-article-card [article]="article" />
+        }
+    </div>
+    <app-pagination [page]="paged().page" [totalPages]="paged().totalPages"
+        (pageChange)="onPageChange($event)"></app-pagination>
+    }
+</section>

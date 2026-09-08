@@ -1,0 +1,33 @@
+<a [routerLink]="['/article', article.id]" class="article-card" [class.article-card-featured]="isFeatured">
+    <div class="article-card-img">
+        @if(article.thumbnail){
+        <img [src]="article.thumbnail" [alt]="article.title" loading="lazy" width="400" height="225" />
+        } @else{
+        <div class="article-card-img-fallback"></div>
+        }
+        @if(badge){
+        <span class="chip article-card-badge">{{badge}}</span>
+        }
+    </div>
+
+    <div class="article-card-body">
+        <div class="row gap-2 row-wrap">
+            <span class="chip chip-muted">{{article.category}}</span>
+        </div>
+        <h3 class="article-card-title">{{article.title}}</h3>
+        <p class="article-card-desc">{{article.description}}</p>
+
+
+        <div class="row gap-2 article-card-meta">
+            <img [src]="article.authorAvatar" [alt]="article.authorName" class="avatar avatar-sm" />
+            <span class="article-card-author">{{article.authorName}}</span>
+            <span>{{article.publishedAt}}</span>
+        </div>
+
+        <div class="row gap-3 article-card-stats">
+            <span>👁 {{ article.views }}</span>
+            <span>♥ {{ article.likes }}</span>
+            <span>💬 {{ article.commentCount }}</span>
+        </div>
+    </div>
+</a>

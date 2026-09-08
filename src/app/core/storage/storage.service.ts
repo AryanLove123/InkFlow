@@ -53,4 +53,5 @@ export const STORAGE_KEYS = {
   CURRENT_USER_ID: 'current_user_id',
   ARTICLES: 'articles',
   HAS_SEEDED: 'hasSeeded',
+  VIEWED_ARTICLES: 'viewed_articles'
 } as const;

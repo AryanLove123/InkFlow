@@ -1,7 +1,8 @@
 <div class="auth-page card">
     <h1>Sign in to InkFLow</h1>
+    <p class="intro">Get ready for an amazing world of articles by brilliant minds</p>
     @if(errorMessage()){
         <p class="error">{{ errorMessage() }}</p>
     }
-    <button (click)="signInWithGoogle()">Sign in with Google</button>
+    <button class="btn btn-primary" (click)="signInWithGoogle()">Sign in with Google</button>
 </div>

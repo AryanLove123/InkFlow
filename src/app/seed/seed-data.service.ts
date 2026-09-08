@@ -19,7 +19,7 @@ export class SeedDataService {
   }
 
   avatarSeedToUrl(seed: string): string {
-    return `https://avatars.dicebear.com/api/avataaars/${seed}.svg`;
+    return `https://api.dicebear.com/7.x/notionists/svg?seed=${seed}`;
   }
 
   seedUsers() : void {

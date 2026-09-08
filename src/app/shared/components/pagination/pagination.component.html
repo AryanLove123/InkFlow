@@ -1,0 +1,9 @@
+@if (totalPages > 1) {
+<nav class="pagination">
+    <button type="button" (click)="go(page - 1)" [disabled]="page === 1">‹</button>
+    @for (p of visiblePages(); track p) {
+    <button type="button" [class.is-active]="p === page" (click)="go(p)">{{ p }}</button>
+    }
+    <button type="button" (click)="go(page + 1)" [disabled]="page === totalPages">›</button>
+</nav>
+}

@@ -1,12 +1,18 @@
 import { computed, inject, Injectable, signal } from '@angular/core';
 import { Article } from '../../models/article.model';
 import { STORAGE_KEYS, StorageService } from '../storage/storage.service';
+import { PopularityService } from './popularity.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ArticleService {
-  private storageService = inject(StorageService);
+  constructor(private storageService: StorageService, private popularityService: PopularityService){
+    const saved =  this.storageService.get<Record<string, Article>>(STORAGE_KEYS.ARTICLES);
+    if(saved){
+      this.articleRecord.set(saved);
+    }
+  }
   articleRecord = signal<Record<string, Article>>({});
 
   articles = computed(() => Object.values(this.articleRecord()));
@@ -14,8 +20,12 @@ export class ArticleService {
   publishedArticles = computed(() => this.articles().filter((article) => article.status === 'published'));
 
   latestArticles = computed(() =>
-    this.publishedArticles().sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
+    [...this.publishedArticles()].sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
   );
+
+  popularArticles = computed(() => this.popularityService.sortByPopularity(this.publishedArticles()));
+
+  featuredArticles = computed(() => this.popularityService.selectFeatured(this.publishedArticles()));
 
   persistArticles() {
     this.storageService.set(STORAGE_KEYS.ARTICLES, this.articleRecord());
@@ -32,4 +42,27 @@ export class ArticleService {
     });
     this.persistArticles();
   }
+
+  recordViewedBy(userId: string, articleId: string): void{
+    const viewedArticles = this.storageService.get<Record<string, string[]>>(STORAGE_KEYS.VIEWED_ARTICLES) ?? {};
+    const viewedArticleByUser = viewedArticles[userId] ?? [];
+
+    if(!viewedArticleByUser.includes(articleId)){
+      viewedArticles[userId] = [...viewedArticleByUser, articleId];
+      this.storageService.set(STORAGE_KEYS.VIEWED_ARTICLES, viewedArticles);
+    }
+  }
+
+  getViewedArticleIds(userId: string): string[]{
+    const viewedArticles = this.storageService.get<Record<string, string[]>>(STORAGE_KEYS.VIEWED_ARTICLES) ?? {};
+    return viewedArticles[userId] ?? [];
+  }
+
+  paginate<T>(items: T[], page: number, pageSize = 10): { items: T[]; totalPages: number; page: number } {
+    const totalPages = Math.max(1, Math.ceil(items.length / pageSize));
+    const safePage = Math.min(Math.max(1, page), totalPages);
+    const start = (safePage - 1) * pageSize;
+    return { items: items.slice(start, start + pageSize), totalPages, page: safePage };
+  }
+
 }

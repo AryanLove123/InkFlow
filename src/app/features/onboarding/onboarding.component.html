@@ -5,7 +5,7 @@
 
     <div class="interest-grid">
         @for(category of categories; track category){
-        <button type="button" class="chip chip-interactive" [class.chip--selected]="selected().includes(category)"
+        <button type="button" class="chip chip-interactive" [class.chip-selected]="selected().includes(category)"
             (click)="toggleCategory(category)">{{ category }}</button>
         }
     </div>
