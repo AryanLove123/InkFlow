@@ -14,5 +14,9 @@ export const routes: Routes = [
         path: 'onboarding',
         loadComponent: () => import('./features/onboarding/onboarding.component').then(m => m.OnboardingComponent)
     },
+    {
+        path: 'article/:id',
+        loadComponent: () => import('./features/article-detail/article-detail.component').then(m => m.ArticleDetailComponent)
+    }
 
 ];

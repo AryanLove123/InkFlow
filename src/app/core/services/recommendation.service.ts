@@ -47,4 +47,20 @@ export class RecommendationService {
       .sort((a, b) => b.score - a.score)
       .map((a) => a.article);
   }
+
+  findRelatedArticles(article: Article, allArticles: Article[], count = 4): Article[] {
+    return allArticles
+      .filter((a) => a.id != article.id)
+      .map((a) => {
+        let score = 0;
+        if (a.category === article.category) score += 5;
+        score += a.tags.filter((t) => article.tags.includes(t)).length * 3;
+        if (a.authorId === article.authorId) score += 2;
+        return { article: a, score };
+      })
+      .filter((x) => x.score > 0)
+      .sort((a, b) => b.score - a.score)
+      .slice(0, count)
+      .map((x) => x.article);
+  }
 }
