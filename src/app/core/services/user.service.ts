@@ -72,4 +72,8 @@ export class UserService {
   getProfile(userId: string): UserProfile | null {
     return this.profiles()[userId] ?? null;
   }
+
+  clearActiveProfile(): void {
+    this.activeProfileId.set(null);
+  }
 }

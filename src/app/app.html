@@ -1,3 +1,57 @@
+<header class="site-header">
+    <div class="site-header-inner container">
+        <a routerLink="/" class="brand">InkFlow</a>
+
+        <nav class="main-nav" [class.main-nav-open]="menuOpen">
+            <a routerLink="/" routerLinkActive="is-active" [routerLinkActiveOptions]="{ exact: true }"
+                (click)="closeMenu()">Home</a>
+            <a routerLink="/explore" routerLinkActive="is-active" (click)="closeMenu()">Explore</a>
+            <a routerLink="/authors" routerLinkActive="is-active" (click)="closeMenu()">Authors</a>
+
+            @if (currentUser(); as user) {
+            <a routerLink="/drafts" routerLinkActive="is-active" (click)="closeMenu()"
+                class="nav-mobile-only">Drafts</a>
+            <a routerLink="/profile" routerLinkActive="is-active" (click)="closeMenu()"
+                class="nav-mobile-only">Profile</a>
+            <a routerLink="/settings" routerLinkActive="is-active" (click)="closeMenu()"
+                class="nav-mobile-only">Settings</a>
+            <button type="button" class="nav-mobile-only link-button" (click)="logout()">Sign out</button>
+            } @else {
+            <a routerLink="/login" routerLinkActive="is-active" (click)="closeMenu()" class="nav-mobile-only">Sign
+                in</a>
+            }
+        </nav>
+
+        <div class="header-actions">
+            @if (currentUser(); as user) {
+            <a routerLink="/create" class="btn btn-primary btn-sm">Write</a>
+            <div class="user-menu">
+                <img [src]="profile()?.photoUrl || user.photoUrl" [alt]="user.name" class="avatar avatar-sm" />
+                <div class="user-menu-dropdown">
+                    <div class="user-menu-name">{{ profile()?.name || user.name }}</div>
+                    <a routerLink="/drafts">Drafts</a>
+                    <a routerLink="/profile">Profile</a>
+                    <a routerLink="/settings">Settings</a>
+                    <button type="button" (click)="logout()">Sign out</button>
+                </div>
+            </div>
+            } @else {
+            <a routerLink="/login" class="btn btn--primary btn--sm">Sign in</a>
+            }
+
+            <button type="button" class="hamburger" (click)="toggleMenu()" aria-label="Toggle menu">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </div>
+</header>
+
 <main class="site-main">
-    <router-outlet/>
+    <router-outlet />
 </main>
+
+<footer class="site-footer">
+  <div class="container site-footer-inner">
+    <span>InkFlow — an Angular training project. Build with ❤️ by Lovekesh Arya</span>
+  </div>
+</footer>

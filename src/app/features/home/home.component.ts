@@ -63,8 +63,8 @@ export class HomeComponent {
         if(!cancelled){
           this.isRanking.set(false);
         }
-      })
-    }) 
+      });
+    });
   }
 
   setTab(tab: FeedTab): void{
