@@ -23,9 +23,11 @@ export class SeedDataService {
   }
 
   seedUsers() : void {
-    const Profiles: Record<string, UserProfile> = {};
+    const existingProfiles: Record<string, UserProfile> = 
+    this.storageService.get<Record<string, UserProfile>>(STORAGE_KEYS.USERS) || {};
+    const seededProfiles: Record<string, UserProfile> = {};
     SEED_AUTHORS.forEach((author,i) => {
-      Profiles[author.uid] = {
+      seededProfiles[author.uid] = {
         id: author.uid,
         name: author.name,
         email: author.email,
@@ -40,7 +42,11 @@ export class SeedDataService {
         onboardingComplete: true,
       };
     });
-    this.storageService.set(STORAGE_KEYS.USERS, Profiles);
+    const mergedProfiles: Record<string, UserProfile> = {
+    ...existingProfiles,
+    ...seededProfiles,
+  };
+    this.storageService.set(STORAGE_KEYS.USERS, mergedProfiles);
   }
 
   seedArticles() :  Article[] {

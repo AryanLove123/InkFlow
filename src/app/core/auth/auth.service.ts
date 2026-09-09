@@ -5,7 +5,6 @@ import { onAuthStateChanged, signInWithPopup } from 'firebase/auth';
 import { auth, googleAuthProvider } from '../../firebase.config';
 import { STORAGE_KEYS, StorageService } from '../storage/storage.service';
 
-
 @Injectable({
   providedIn: 'root',
 })
@@ -29,7 +28,7 @@ export class AuthService {
           uid: user.uid,
           name: user.displayName || '',
           email: user.email || '',
-          photoUrl: user.photoURL || ''
+          photoUrl: user.photoURL || '',
         };
         this.setUser(authUser);
       } else {
@@ -40,16 +39,16 @@ export class AuthService {
   }
 
   async signInWithGoogle(): Promise<AuthUser | null> {
-    try{
+    try {
       const cred = await signInWithPopup(auth, googleAuthProvider);
 
-      const user ={
+      const user = {
         uid: cred.user.uid,
         name: cred.user.displayName || '',
         email: cred.user.email || '',
-        photoUrl: cred.user.photoURL || ''
+        photoUrl: cred.user.photoURL || '',
       };
-      return user? user: null;
+      return user ? user : null;
     } catch (error) {
       console.error('Error logging in with Google:', error);
       return null;
@@ -74,6 +73,17 @@ export class AuthService {
 
   completeSignIn(user: AuthUser): void {
     this.storageService.set(STORAGE_KEYS.CURRENT_USER_ID, user.uid);
+    const existingUsers: Record<string, AuthUser> =
+      this.storageService.get<Record<string, AuthUser>>(STORAGE_KEYS.USERS) || {};
+
+    const updatedUsers: Record<string, AuthUser> = {
+      ...existingUsers,
+      [user.uid]: {
+        ...(existingUsers[user.uid] || {}),
+        ...user,
+      },
+    };
+    this.storageService.set(STORAGE_KEYS.USERS, updatedUsers);
     this.setUser(user);
   }
 }

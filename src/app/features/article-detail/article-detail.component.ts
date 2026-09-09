@@ -8,10 +8,11 @@ import { RecommendationService } from '../../core/services/recommendation.servic
 import { RelativeTimePipe } from '../../shared/pipes/relative-time.pipe';
 import { CompactNumberPipe } from '../../shared/pipes/compact-number.pipe';
 import { ArticleCardComponent } from '../../shared/components/article-card/article-card.component';
+import { LikeButtonComponent } from '../../shared/components/like-button/like-button.component';
 
 @Component({
   selector: 'app-article-detail',
-  imports: [RelativeTimePipe, CompactNumberPipe, ArticleCardComponent, RouterLink],
+  imports: [RelativeTimePipe, CompactNumberPipe, ArticleCardComponent, RouterLink, LikeButtonComponent],
   templateUrl: './article-detail.component.html',
   styleUrl: './article-detail.component.scss',
 })

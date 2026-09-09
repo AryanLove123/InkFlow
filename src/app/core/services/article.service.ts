@@ -39,12 +39,36 @@ export class ArticleService {
     this.popularityService.selectFeatured(this.publishedArticles()),
   );
 
+  popularTags = computed(() => {
+    const counts = new Map<string, number>();
+    this.publishedArticles().forEach((a) => a.tags.forEach((t) => counts.set(t, (counts.get(t) ?? 0) + 1)));
+    return [...counts.entries()]
+      .sort((a, b) => b[1] - a[1])
+      .map(([tag, count]) => ({ tag, count }));
+  });
+
   persistArticles() {
     this.storageService.set(STORAGE_KEYS.ARTICLES, this.articleRecord());
   }
 
   getArticleById(articleId: string): Article | null {
     return this.articleRecord()[articleId] ?? null;
+  }
+
+  byTag(tag: string): Article[] {
+    return this.publishedArticles().filter((a) => a.tags.includes(tag));
+  }
+
+  search(query: string): Article[] {
+    const q = query.trim().toLowerCase();
+    if (!q) return [];
+    return this.publishedArticles().filter(
+      (a) =>
+        a.title.toLowerCase().includes(q) ||
+        a.description.toLowerCase().includes(q) ||
+        a.authorName.toLowerCase().includes(q) ||
+        a.tags.some((t) => t.toLowerCase().includes(q))
+    );
   }
 
   deleteArticle(articleId: string): void {

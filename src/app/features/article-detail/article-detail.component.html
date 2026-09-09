@@ -17,7 +17,7 @@
 
     <div class="article-detail-stats">
         <span>👁 {{ a.views | compactNumber }} views</span>
-        <span>♥ {{ a.likes | compactNumber }}</span>
+        <app-like-button [liked]="isLiked()" [count]="a.likes" (toggle)="toggleLike()" />
         <span>💬 {{ a.commentCount | compactNumber }} comments</span>
     </div>
 

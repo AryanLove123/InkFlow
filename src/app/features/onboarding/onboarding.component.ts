@@ -33,7 +33,7 @@ export class OnboardingComponent {
     const user = this.currentUser();
     if(!user) return; 
     const profile = this.userService.getProfile(user.uid);
-    this.userService.savePreferences(user.uid, { categories: this.selected(), tags: profile?.preferences.tags || [], authors: profile?.preferences.authors || [] });
+    this.userService.savePreferences(user.uid, { categories: this.selected(), tags: profile?.preferences?.tags || [], authors: profile?.preferences?.authors || [] });
     this.router.navigate(['/']);
   }
 

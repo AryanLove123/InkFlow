@@ -1,4 +1,5 @@
 import { Routes } from '@angular/router';
+import { authGuard } from './core/guards/auth.guard';
 
 export const routes: Routes = [
     {
@@ -11,15 +12,22 @@ export const routes: Routes = [
     },
     {
         path: 'onboarding',
-        loadComponent: () => import('./features/onboarding/onboarding.component').then(m => m.OnboardingComponent)
+        loadComponent: () => import('./features/onboarding/onboarding.component').then(m => m.OnboardingComponent),
+        canActivate: [authGuard],
+    },
+    {
+        path: 'explore',
+        loadComponent: () => import('./features/explore/explore.component').then(m => m.ExploreComponent)
     },
     {
         path: 'create',
-        loadComponent: () => import('./features/editor/editor.component').then(m=> m.EditorComponent)
+        loadComponent: () => import('./features/editor/editor.component').then(m=> m.EditorComponent),
+        canActivate: [authGuard],
     },
     {
         path: 'drafts',
-        loadComponent: () => import('./features/drafts/drafts.component').then(m=> m.DraftsComponent)
+        loadComponent: () => import('./features/drafts/drafts.component').then(m=> m.DraftsComponent),
+        canActivate: [authGuard],
     },
     {
         path: 'article/:id',

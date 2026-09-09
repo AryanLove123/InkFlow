@@ -1,0 +1,31 @@
+<div class="container explore-page">
+    <div class="header">
+        <h1>Discover</h1>
+        <p class="sub-header">Step into a new zone, find your next read.</p>
+    </div>
+
+    <div class="explore-search">
+      <app-search-bar placeholder="Search🔍" (queryChange)="onQuery($event)" />
+    </div>
+
+    @if (popularTags().length) {
+      <div class="trending-tags">
+        @for (t of popularTags(); track t.tag) {
+          <app-tag-chip [tag]="t.tag" [count]="t.count" [selected]="activeTag() === t.tag" (tagClick)="onTagClick($event)" />
+        }
+      </div>
+    } @else{
+        <app-empty-state title="No tags yet" message="Tags will appear here once articles are published with them." />
+    }
+
+    @if (pagedArticles().items.length === 0) {
+      <app-empty-state title="No matching articles" message="Try a different search term or tag." />
+    } @else {
+      <div class="grid grid-3">
+        @for (article of pagedArticles().items; track article.id) {
+          <app-article-card [article]="article" />
+        }
+      </div>
+      <app-pagination [page]="pagedArticles().page" [totalPages]="pagedArticles().totalPages" (pageChange)="onPageChange($event)" />
+    }
+</div>

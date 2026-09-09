@@ -106,7 +106,7 @@
     color: var(--color-muted);
 }
 
-input[type="text"],input[type="datetime-local"],textarea, select {
+input[type="text"],input[type="search"],input[type="datetime-local"],textarea, select {
   font: inherit;
   padding: 10px 12px;
   border: 1px solid var(--color-border);
