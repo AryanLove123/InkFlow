@@ -73,17 +73,6 @@ export class AuthService {
 
   completeSignIn(user: AuthUser): void {
     this.storageService.set(STORAGE_KEYS.CURRENT_USER_ID, user.uid);
-    const existingUsers: Record<string, AuthUser> =
-      this.storageService.get<Record<string, AuthUser>>(STORAGE_KEYS.USERS) || {};
-
-    const updatedUsers: Record<string, AuthUser> = {
-      ...existingUsers,
-      [user.uid]: {
-        ...(existingUsers[user.uid] || {}),
-        ...user,
-      },
-    };
-    this.storageService.set(STORAGE_KEYS.USERS, updatedUsers);
     this.setUser(user);
   }
 }
