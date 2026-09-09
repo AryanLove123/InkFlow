@@ -1,0 +1,22 @@
+@if (author(); as a) {
+      <div class="container">
+        <div class="author-header">
+          <img [src]="a.photoUrl" [alt]="a.name" class="avatar" style="width: 96px; height: 96px;" />
+          <div class="author-header-meta">
+            <h2>{{ a.name }}</h2>
+            <p>{{ a.bio }}</p>
+            <span class="chip chip-muted">{{ articles().length }} article{{ articles().length === 1 ? '' : 's' }} published</span>
+          </div>
+        </div>
+
+        @if (articles().length === 0) {
+          <app-empty-state title="No published articles yet" message="Check back once this author has published something." />
+        } @else {
+          <div class="grid grid-3" style="padding-bottom: var(--space-8);">
+            @for (article of articles(); track article.id) {
+              <app-article-card [article]="article" />
+            }
+          </div>
+        }
+      </div>
+    }

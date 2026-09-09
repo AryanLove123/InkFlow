@@ -1,0 +1,16 @@
+.author-header {
+    display: flex;
+    align-items: center;
+    gap: var(--space-5);
+    padding: var(--space-7) 0 var(--space-6);
+    flex-wrap: wrap;
+}
+
+.author-header-meta h1 {
+    margin-bottom: 4px;
+}
+
+.author-header-meta p {
+    color: var(--color-muted);
+    max-width: 520px;
+}

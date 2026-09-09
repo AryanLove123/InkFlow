@@ -1,0 +1,8 @@
+<a [routerLink]="['/authors', author.id]" class="author-card">
+    <img [src]="author.photoUrl" [alt]="author.name" class="avatar avatar-lg">
+    <h4>{{author.name}}</h4>
+    <p>{{author.bio}}</p>
+    @if (articleCount !== undefined) {
+    <span class="chip chip-muted">{{ articleCount }} article{{ articleCount === 1 ? '' : 's' }}</span>
+    }
+</a>

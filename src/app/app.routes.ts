@@ -30,6 +30,14 @@ export const routes: Routes = [
         canActivate: [authGuard],
     },
     {
+        path: 'authors',
+        loadComponent: () => import('./features/authors-directory/authors-directory.component').then(m=> m.AuthorsDirectoryComponent)
+    },
+    {
+        path: 'authors/:id',
+        loadComponent: () => import('./features/author-profile/author-profile.component').then(m => m.AuthorProfileComponent)
+    },
+    {
         path: 'article/:id',
         loadComponent: () => import('./features/article-detail/article-detail.component').then(m => m.ArticleDetailComponent)
     },

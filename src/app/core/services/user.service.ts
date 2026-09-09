@@ -73,6 +73,10 @@ export class UserService {
     return this.profiles()[userId] ?? null;
   }
 
+  getAllProfiles(): UserProfile[]{
+    return Object.values(this.profiles());
+  }
+
   clearActiveProfile(): void {
     this.activeProfileId.set(null);
   }

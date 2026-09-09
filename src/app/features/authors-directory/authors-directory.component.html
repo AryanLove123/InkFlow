@@ -1,0 +1,20 @@
+<div class="container authors-page">
+    <div class="header">
+        <h1>Authors</h1>
+        <p class="sub-header">Everyone publishing on InkFlow right now.</p>
+    </div>
+
+    <div class="authors-search">
+        <app-search-bar placeholder="Search authors by name..." (queryChange)="query.set($event)" />
+    </div>
+
+    @if(results().length == 0){
+    <app-empty-state title="No authors found..." message="Try a different name."></app-empty-state>
+    } @else {
+    <div class="grid grid-3">
+        @for(author of results(); track author.id){
+        <app-author-card [author]="author" [articleCount]="articleService.byAuthor(author.id).length" />
+        }
+    </div>
+    }
+</div>

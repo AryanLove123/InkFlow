@@ -55,6 +55,10 @@ export class ArticleService {
     return this.articleRecord()[articleId] ?? null;
   }
 
+  byAuthor(authorId: string): Article[] {
+    return this.publishedArticles().filter((a) => a.authorId === authorId);
+  }
+  
   byTag(tag: string): Article[] {
     return this.publishedArticles().filter((a) => a.tags.includes(tag));
   }
