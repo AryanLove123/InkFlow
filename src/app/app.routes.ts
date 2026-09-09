@@ -1,5 +1,4 @@
 import { Routes } from '@angular/router';
-import { LoginComponent } from './features/auth/login.component';
 
 export const routes: Routes = [
     {
@@ -15,8 +14,15 @@ export const routes: Routes = [
         loadComponent: () => import('./features/onboarding/onboarding.component').then(m => m.OnboardingComponent)
     },
     {
+        path: 'create',
+        loadComponent: () => import('./features/editor/editor.component').then(m=> m.EditorComponent)
+    },
+    {
+        path: 'drafts',
+        loadComponent: () => import('./features/drafts/drafts.component').then(m=> m.DraftsComponent)
+    },
+    {
         path: 'article/:id',
         loadComponent: () => import('./features/article-detail/article-detail.component').then(m => m.ArticleDetailComponent)
     }
-
 ];

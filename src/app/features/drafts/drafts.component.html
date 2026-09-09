@@ -1,0 +1,27 @@
+<div class="container" style="padding: var(--space-6) 0 var(--space-8);">
+      <div class="row row-between" style="margin-bottom: var(--space-5);">
+        <h1>Your drafts</h1>
+        <a routerLink="/create" class="btn btn--primary">New article</a>
+      </div>
+
+      @if (!currentUser()) {
+        <app-empty-state title="Sign in to see your drafts" message="Drafts are tied to your account." />
+      } @else if (drafts().length === 0) {
+        <app-empty-state title="No drafts yet" message="Start writing and your work will autosave here." />
+      } @else {
+        <div class="card">
+          @for (draft of drafts(); track draft.id) {
+            <div class="draft-row">
+              <div>
+                <div class="draft-row-title">{{ draft.title || 'Untitled draft' }}</div>
+                <div class="draft-row-meta">Last edited {{ draft.updatedAt | relativeTime }} · {{ draft.category || 'No category' }}</div>
+              </div>
+              <div class="draft-row-actions">
+                <a [routerLink]="['/create']" [queryParams]="{ draftId: draft.id }" class="btn btn-secondary btn-sm">Continue</a>
+                <button type="button" class="btn btn-danger btn-sm" (click)="delete(draft.id)">Delete</button>
+              </div>
+            </div>
+          }
+        </div>
+      }
+    </div>

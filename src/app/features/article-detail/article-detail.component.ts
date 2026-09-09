@@ -11,7 +11,7 @@ import { ArticleCardComponent } from '../../shared/components/article-card/artic
 
 @Component({
   selector: 'app-article-detail',
-  imports: [RelativeTimePipe, CompactNumberPipe, ArticleCardComponent],
+  imports: [RelativeTimePipe, CompactNumberPipe, ArticleCardComponent, RouterLink],
   templateUrl: './article-detail.component.html',
   styleUrl: './article-detail.component.scss',
 })

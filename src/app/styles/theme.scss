@@ -69,3 +69,115 @@
   color: var(--color-ink);
   &:hover:not(:disabled) { border-color: var(--color-accent); }
 }
+
+.btn-danger {
+  background: #fff;
+  border-color: var(--color-danger);
+  color: var(--color-danger);
+  &:hover:not(:disabled) { background: var(--color-danger); color: #fff; }
+}
+
+.btn-sm { padding: 6px 14px; font-size: 0.85rem; }
+
+.link-button {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+}
+
+// .........Forms................
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: var(--space-4);
+}
+.field label {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--color-ink);
+}
+.field .hint {
+    font-size: 0.78rem;
+    color: var(--color-muted);
+}
+
+input[type="text"],input[type="datetime-local"],textarea, select {
+  font: inherit;
+  padding: 10px 12px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background: #fff;
+  color: var(--color-ink);
+  width: 100%;
+  &:focus { outline: none; border-color: var(--color-accent); box-shadow: 0 0 0 3px var(--color-accent-light); }
+}
+
+textarea { resize: vertical; min-height: 90px; }
+
+
+/* Rich article/editor content */
+.article-detail-content,
+.editor-content {
+  overflow-wrap: break-word;
+}
+
+/* Paragraphs */
+.article-detail-content p,
+.editor-content p {
+  margin: 0 0 var(--space-4);
+}
+
+/* Headings */
+.article-detail-content h2,
+.editor-content h2 {
+  margin: var(--space-6) 0 var(--space-3);
+  font-family: var(--font-sans);
+  font-size: 1.5rem;
+  line-height: 1.3;
+}
+
+/* Lists */
+.article-detail-content ul,
+.article-detail-content ol,
+.editor-content ul,
+.editor-content ol {
+  margin: 0 0 var(--space-5);
+  padding-left: 1.5rem;
+}
+
+.article-detail-content li,
+.editor-content li {
+  margin-bottom: var(--space-2);
+}
+
+/* Links */
+.article-detail-content a,
+.editor-content a {
+  color: var(--color-accent);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  cursor: pointer;
+}
+
+.article-detail-content a:hover,
+.editor-content a:hover {
+  text-decoration-thickness: 2px;
+}
+
+/* Images inserted into article content */
+.article-detail-content img,
+.editor-content img {
+  display: block;
+  max-width: 100%;
+  width: auto;
+  height: auto;
+  max-height: 500px;
+  margin: var(--space-5) auto;
+  border-radius: var(--radius-lg);
+  object-fit: contain;
+}

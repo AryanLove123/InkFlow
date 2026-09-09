@@ -1,5 +1,5 @@
 import { computed, inject, Injectable, signal } from '@angular/core';
-import { Article } from '../../models/article.model';
+import { Article, ArticleDraft } from '../../models/article.model';
 import { STORAGE_KEYS, StorageService } from '../storage/storage.service';
 import { PopularityService } from './popularity.service';
 
@@ -15,6 +15,7 @@ export class ArticleService {
     if (saved) {
       this.articleRecord.set(saved);
     }
+    this.publishDueScheduledArticles();
   }
   articleRecord = signal<Record<string, Article>>({});
 
@@ -55,7 +56,8 @@ export class ArticleService {
   }
 
   recordViewedBy(userId: string, articleId: string): void {
-    const viewedArticles = this.storageService.get<Record<string, string[]>>(STORAGE_KEYS.VIEWED_ARTICLES) ?? {};
+    const viewedArticles =
+      this.storageService.get<Record<string, string[]>>(STORAGE_KEYS.VIEWED_ARTICLES) ?? {};
     const viewedArticleByUser = viewedArticles[userId] ?? [];
 
     if (!viewedArticleByUser.includes(articleId)) {
@@ -92,13 +94,98 @@ export class ArticleService {
     this.persistArticles();
   }
 
-  incrementView(articleId: string): void{
-    this.articleRecord.update((articles) =>{
+  incrementView(articleId: string): void {
+    this.articleRecord.update((articles) => {
       const existing = articles[articleId];
-      if(!existing) return articles;
-      return {...articles, [articleId]: {...existing, views: existing.views+1}};
+      if (!existing) return articles;
+      return { ...articles, [articleId]: { ...existing, views: existing.views + 1 } };
     });
     this.persistArticles();
+  }
+
+  publish(draft: ArticleDraft, authorName: string, authorAvatar?: string): Article {
+    const now = new Date().toISOString();
+    const existing = draft.originalArticleId ? this.articleRecord()[draft.originalArticleId] : null;
+
+    const article: Article = existing
+      ? {
+          ...existing,
+          title: draft.title,
+          description: draft.description,
+          content: draft.content,
+          thumbnail: draft.thumbnail,
+          category: draft.category,
+          tags: draft.tags,
+          updatedAt: now,
+        }
+      : {
+          id: `article_${Date.now()}`,
+          title: draft.title,
+          description: draft.description,
+          content: draft.content,
+          thumbnail: draft.thumbnail,
+          authorId: draft.authorId,
+          authorName,
+          authorAvatar,
+          category: draft.category,
+          tags: draft.tags,
+          status: 'published',
+          createdAt: now,
+          updatedAt: now,
+          publishedAt: now,
+          views: 0,
+          likes: 0,
+          likedBy: [],
+          commentCount: 0,
+        };
+    this.articleRecord.update((articles) => ({ ...articles, [article.id]: article }));
+    this.persistArticles();
+    return article;
+  }
+
+  schedule(draft: ArticleDraft, authorName: string, scheduledAt: string,  authorAvatar?: string): Article{
+    const now = new Date().toISOString();
+    const article: Article ={
+      id: draft.originalArticleId ?? `article_${Date.now()}`,
+      title: draft.title,
+      description: draft.description,
+      content: draft.content,
+      thumbnail: draft.thumbnail,
+      authorId: draft.authorId,
+      authorName,
+      authorAvatar,
+      category: draft.category,
+      tags: draft.tags,
+      status: 'scheduled',
+      createdAt: now,
+      updatedAt: now,
+      scheduledAt,
+      views: 0,
+      likes: 0,
+      likedBy: [],
+      commentCount: 0
+    };
+    this.articleRecord.update((articles) => ({...articles, [article.id]: article}));
+    this.persistArticles();
+    return article;
+  }
+
+  publishDueScheduledArticles(): void{
+    const now = Date.now();
+    let changed = false;
+    this.articleRecord.update((articles) => {
+      const allArticles = {...articles};
+      Object.values(allArticles).forEach((a) => {
+        if(a.status == 'scheduled' && a.scheduledAt && new Date(a.scheduledAt).getTime() <=now){
+          allArticles[a.id] = {...a, status: 'published', publishedAt: a.scheduledAt};
+          changed = true;
+        }
+      });
+      return allArticles;
+    });
+    if(changed){
+      this.persistArticles();
+    }
   }
 
   paginate<T>(

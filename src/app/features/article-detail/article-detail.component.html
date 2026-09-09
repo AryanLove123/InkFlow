@@ -28,38 +28,39 @@
     <div class="article-detail-content" [innerHTML]="a.content"></div>
 
     @if (a.tags.length) {
-    <div class="article-detail__tags">
+    <div class="article-detail-tags">
         @for (tag of a.tags; track tag) {
-        <span class="chip chip--muted">#{{ tag }}</span>
+        <span class="chip chip-muted">#{{ tag }}</span>
         }
     </div>
     }
 
     @if(author(); as author){
+    @if(otherArticlesFromAuthor().length){
     <div class="author-bio-card">
         <img [src]="author.photoUrl" [alt]="author.name" class="avatar avatar-md" />
         <div>
             <strong>{{author.name}}</strong>
             <p>{{author.bio}}</p>
-            @if(otherArticlesFromAuthor().length){
             <div class="row gap-2 row-wrap">
                 @for(author of otherArticlesFromAuthor(); track author.id){
-                <span class="chip chip-muted">{{author.title}}</span>
+                    <a [routerLink]="['/article', author.id]" class="chip chip-muted">{{author.title}}</a>
                 }
             </div>
-            }
         </div>
     </div>
     }
+    }
 
     @if(relatedArticles().length){
-        <section class="related-section">
-            <h3 class="grid grid-2">
-                @for(related of relatedArticles(); track related.id){
-                    <app-article-card [article]="related"/>
-                }
-            </h3>
-        </section>
+    <section class="related-section">
+        <h3>You might also like</h3>
+        <div class="grid grid-2">
+            @for(related of relatedArticles(); track related.id){
+            <app-article-card [article]="related" />
+            }
+        </div>
+    </section>
     }
 </article>
 }
