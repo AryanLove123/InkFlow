@@ -17,23 +17,24 @@ export class LoginComponent {
 
   errorMessage = signal<string | null>(null);
 
-  signInWithGoogle(): void {
-    this.authService.signInWithGoogle().then((user) => {
+  async signInWithGoogle(): Promise<void> {
+    try {
+      this.errorMessage.set(null);
+      const user = await this.authService.signInWithGoogle();
       if (user) {
         this.completeSignIn(user);
       }
-    }, (err: Error) => {
+    } catch (err: any) {
       console.error('Error during Google sign-in:', err);
       this.errorMessage.set(
-          err.name === 'auth/popup-closed-by-user'
-            ? 'Sign-in cancelled. Please try again.'
-            : 'Authentication failed. Please check your connection and configuration.'
-        );
-    });
+        err?.code === 'auth/popup-closed-by-user'
+          ? 'Sign-in cancelled. Please try again.'
+          : 'Authentication failed. Please check your connection and configuration.'
+      );
+    }
   }
 
   completeSignIn(user: AuthUser): void {
-    this.authService.completeSignIn(user);
     const {profile, isFirstLogin} = this.userService.loadOrCreateProfile(user);
 
     if(isFirstLogin || !profile.onboardingComplete){

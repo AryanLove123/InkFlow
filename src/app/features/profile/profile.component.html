@@ -1,0 +1,36 @@
+<div class="container profile-page">
+    @if(profile(); as p){
+    <div class="profile-header">
+        <img [src]="p.photoUrl" [alt]="p.name" class="avatar avatar-lg">
+        <div>
+            <h2>{{p.name}}</h2>
+            <p class="bio">{{p.bio || 'No bio yet — add one in Settings.'}}</p>
+            <a routerLink="/settings" class="btn btn-secondary btn-sm">Edit profile</a>
+        </div>
+    </div>
+
+    <h3 style="margin-bottom: var(--space-4);">Your articles</h3>
+    @if(myArticles().length == 0){
+    <app-empty-state title="Nothing published yet" message="Articles and scheduled posts you write will show up here.">
+        <a routerLink="/create" class="btn btn-primary">Write your first article</a>
+    </app-empty-state>
+    } @else {
+    <div class="card">
+        @for(a of myArticles(); track a.id){
+        <div class="article-row">
+            <span class="status-pill" [class.status-pill-published]="a.status == 'published' "
+                [class.status-pill-scheduled]="a.status == 'scheduled' ">
+                {{a.status}}
+            </span>
+            <div class="article-row-title">{{a.title}}</div>
+            <div class="draft-row-actions">
+                  <a [routerLink]="['/article', a.id]" class="btn btn-secondary btn-sm">View</a>
+                  <a [routerLink]="['/edit', a.id]" class="btn btn-secondary btn-sm">Edit</a>
+                  <button type="button" class="btn btn-danger btn-sm" (click)="delete(a.id)">Delete</button>
+                </div>
+        </div>
+        }
+    </div>
+    }
+    }
+</div>

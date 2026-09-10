@@ -40,7 +40,7 @@ export class ArticleDetailComponent {
   otherArticlesFromAuthor = computed(() =>{
     const a = this.article();
     if(!a) return [];
-    return this.articleService.getArticlesByAuthorId(a.authorId).filter((x) => x.id != a.id).slice(0.3);
+    return this.articleService.getArticlesByAuthorId(a.authorId).filter((x) => x.id != a.id).slice(0,3);
   });
 
   relatedArticles = computed(()=>{

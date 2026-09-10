@@ -1,9 +1,10 @@
 import { Injectable, signal } from '@angular/core';
 import { AuthUser } from '../../models/user.model';
 import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
-import { onAuthStateChanged, signInWithPopup } from 'firebase/auth';
+import { onAuthStateChanged, signInWithPopup, signOut } from 'firebase/auth';
 import { auth, googleAuthProvider } from '../../firebase.config';
 import { STORAGE_KEYS, StorageService } from '../storage/storage.service';
+import { UserService } from '../services/user.service';
 
 @Injectable({
   providedIn: 'root',
@@ -17,7 +18,7 @@ export class AuthService {
 
   authReady = signal(false);
 
-  constructor(private storageService: StorageService) {
+  constructor(private storageService: StorageService, private userService: UserService) {
     this.initFirebaseSessionListener();
   }
 
@@ -30,7 +31,7 @@ export class AuthService {
           email: user.email || '',
           photoUrl: user.photoURL || '',
         };
-        this.setUser(authUser);
+        this.completeSignIn(authUser);
       } else {
         this.setUser(null);
       }
@@ -51,16 +52,15 @@ export class AuthService {
       return user ? user : null;
     } catch (error) {
       console.error('Error logging in with Google:', error);
-      return null;
+      throw error;
     }
   }
 
   async logout(): Promise<void> {
     try {
-      await auth.signOut().then(() => {
-        this.storageService.clear();
-        this.setUser(null);
-      });
+      await signOut(auth);
+      this.storageService.remove(STORAGE_KEYS.CURRENT_USER_ID);
+      this.setUser(null);
     } catch (error) {
       console.error('Error logging out:', error);
     }
@@ -74,5 +74,6 @@ export class AuthService {
   completeSignIn(user: AuthUser): void {
     this.storageService.set(STORAGE_KEYS.CURRENT_USER_ID, user.uid);
     this.setUser(user);
+    this.userService.loadOrCreateProfile(user);
   }
 }

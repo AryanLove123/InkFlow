@@ -1,0 +1,51 @@
+<div class="container settings-page">
+    <h1>Settings</h1>
+
+    @if(profile(); as p){
+    <section class="settings-section">
+        <h3>Profile</h3>
+
+        <div class="field">
+            <label for="name">Display name</label>
+            <input id="name" type="text" [(ngModel)]="name">
+        </div>
+        <div class="field">
+            <label for="bio">Bio</label>
+            <textarea id="bio" [(ngModel)]="bio" placeholder="Tell readers a bit about yourself"></textarea>
+        </div>
+        <div class="field">
+            <label for="photoUrl">Photo URL</label>
+            <input id="photo" type="text" [(ngModel)]="photoUrl" />
+        </div>
+
+        <button type="button" class="btn btn-primary" (click)="saveProfile()">Save Profile</button>
+        @if(savedProfile()){
+        <span class="saved">Saved</span>
+        }
+    </section>
+
+
+    <section class="settings-section">
+        <h3>Interests</h3>
+        <p class="sub-header">These drive your "For You" feed.</p>
+        <div class="interest-grid">
+            @for(c of categories; track c){
+            <button type="button" class="chip chip-interactive" [class.chip-selected]="selectedCategories().includes(c)"
+                (click)="toggleCategory(c)">
+                {{c}}
+            </button>
+            }
+        </div>
+        <button type="button" class="btn btn-primary" (click)="savePreferences()">Save interests</button>
+        @if(savedPrefs()){
+            <span class="saved">Saved</span>
+        }
+    </section>
+
+
+    <section class="settings-section">
+        <h3>Account</h3>
+        <button type="button" class="btn btn-secondary" (click)="signOut()">Sign out</button>
+    </section>
+    }
+</div>

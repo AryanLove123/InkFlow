@@ -164,7 +164,7 @@ export class EditorComponent implements OnInit, OnDestroy {
 
   autoSave(): void{
     const user = this.currentUser();
-    if(!user || this.title.trim()) return;
+    if(!user || !this.title.trim()) return;
     this.saveStatus.set('saving');
     const saved = this.draftService.save(this.buildDraftPayload());
     this.draftId = saved.id;

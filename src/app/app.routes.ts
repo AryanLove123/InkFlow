@@ -11,6 +11,16 @@ export const routes: Routes = [
         loadComponent: () => import('./features/auth/login.component').then(m => m.LoginComponent)
     },
     {
+        path: 'settings',
+        loadComponent: () => import('./features/settings/settings.component').then(m => m.SettingsComponent),
+        canActivate: [authGuard]
+    },
+    {
+        path: 'profile',
+        loadComponent: () => import('./features/profile/profile.component').then(m => m.ProfileComponent),
+        canActivate: [authGuard]
+    },
+    {
         path: 'onboarding',
         loadComponent: () => import('./features/onboarding/onboarding.component').then(m => m.OnboardingComponent),
         canActivate: [authGuard],
@@ -40,6 +50,11 @@ export const routes: Routes = [
     {
         path: 'article/:id',
         loadComponent: () => import('./features/article-detail/article-detail.component').then(m => m.ArticleDetailComponent)
+    },
+    {
+        path: 'edit/:id',
+        loadComponent: () => import('./features/editor/editor.component').then(m =>m.EditorComponent),
+        canActivate: [authGuard]
     },
     {
         path: '**',

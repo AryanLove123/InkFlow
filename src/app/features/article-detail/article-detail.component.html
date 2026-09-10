@@ -43,8 +43,8 @@
             <strong>{{author.name}}</strong>
             <p>{{author.bio}}</p>
             <div class="row gap-2 row-wrap">
-                @for(author of otherArticlesFromAuthor(); track author.id){
-                    <a [routerLink]="['/article', author.id]" class="chip chip-muted">{{author.title}}</a>
+                @for(other of otherArticlesFromAuthor(); track other.id){
+                    <a [routerLink]="['/article', other.id]" class="chip chip-muted">{{other.title}}</a>
                 }
             </div>
         </div>

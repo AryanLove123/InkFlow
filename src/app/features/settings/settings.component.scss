@@ -1,0 +1,32 @@
+.settings-page {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 0 var(--space-4) var(--space-8);
+}
+
+.settings-section {
+    margin-bottom: var(--space-7);
+}
+
+.settings-section h3 {
+    margin-bottom: var(--space-3);
+}
+
+.saved {
+    margin-left: 12px;
+    color: var(--color-accent);
+    font-weight: 600;
+}
+
+.sub-header {
+    color: var(--color-muted);
+    margin-bottom: var(--space-3);
+}
+
+.interest-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+    justify-content: flex-start;
+    margin: 0 0 var(--space-6);
+}
